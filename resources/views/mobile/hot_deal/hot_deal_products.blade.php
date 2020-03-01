@@ -328,11 +328,13 @@
                 <!--// End Changed listings-->
 
                 <!-- Filters -->
+                @if ($flash_deal)
                 <div class="product-filter text-center clearfix filters-panel">
                     <div class="short-by-show text-center">
                         <div class="form-group" style="margin:0px">{!! $flash_deal_details->links() !!}</div>
                     </div>
                 </div>
+                @endif
                 <!-- //end Filters -->
 
                 <!--End content-->

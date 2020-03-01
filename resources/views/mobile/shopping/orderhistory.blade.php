@@ -1,5 +1,6 @@
 @extends('mobile.extra_master')
 @section('page_content')
+
 <!-- Begin Bar Nav -->
 		<header class="bar bar-nav ">
 			<a class="btn btn-link btn-nav pull-left" href="#" onclick="history.go(-1); return false;">
@@ -23,7 +24,7 @@
 												<div class="table-responsive">
 													<table class="table table-bordered">
 														<thead>
-															<tr>
+															<tr class="text-center">
 																<td class="text-center">OrderID</td>
 																<td class="text-left">Quantity</td>
 																<td class="text-right">Total price</td>
@@ -33,7 +34,7 @@
 														</thead>
 														<tbody>
 																@foreach($history as $data)
-																<tr>
+																<tr class="text-center">
 																	<td class="text-center"># {{$data->order_id}}</td>
 																	<td class="text-left">{{$data->total_quantity}}</td>
 																	<td class="text-right">{{$data->total_price}}</td>
@@ -48,8 +49,15 @@
 			                            @else
 			                            <td class="text-center">Reject</td>
 			                            @endif
-																	<td class="text-right">
-	                                  <a href="{{url('history/details/'.$data->id)}}" title="view" class="btn btn-danger btn-sm"><i class="fa fa-eye"></i></a></td>
+										<td class="text-right text-center">
+                                        <a href="{{url('history/details/'.$data->id)}}" title="view" class="btn btn-danger btn-sm"><i class="fa fa-eye"></i></a>
+                                        @if ($data->payment_secure_id)
+                                        <a href="{{url('mobile/payment/'. $data->payment_secure_id)}}" title="view" class="btn btn-danger btn-sm"><i class="fa fa-money" aria-hidden="true"></i></a>
+                                        @endif
+
+
+                                    </td>
+
 	                                </td>
 																</tr>
 															@endforeach

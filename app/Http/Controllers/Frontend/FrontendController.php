@@ -23,6 +23,22 @@ class FrontendController extends Controller
     // Frontend showing page
     public function index()
     {
+        date_default_timezone_set('Asia/Dhaka');
+
+        $flash_deal = FlashDeal::where('status', 1)->where('is_deleted', 0)->select('id', 'end_date')->first();
+        if ($flash_deal) {
+
+            if ($flash_deal->end_date == date('Y-m-d')) {
+                foreach ($flash_deal->flash_deal_details as  $value) {
+                    $value->update([
+                        'status' => 0,
+                    ]);
+                }
+                $flash_deal->update([
+                    'status' => 0
+                ]);
+            }
+        }
         foreach (ThemeSelector::where('status', 1)->get() as $themeselector) {
             $to = Carbon::now()->format('Y-m-d');
             $from = date('Y-m-d', strtotime('+30 days', strtotime($to)));
@@ -209,22 +225,8 @@ class FrontendController extends Controller
 
     public function flashDealProducts()
     {
-        date_default_timezone_set('Asia/Dhaka');
 
         $flash_deal = FlashDeal::where('status', 1)->where('is_deleted', 0)->select('id', 'end_date')->first();
-        if ($flash_deal) {
-
-            if ($flash_deal->end_date == date('Y-m-d')) {
-                foreach ($flash_deal->flash_deal_details as  $value) {
-                    $value->update([
-                        'status' => 0,
-                    ]);
-                }
-                $flash_deal->update([
-                    'status' => 0
-                ]);
-            }
-        }
         $flash_deal_details = 0;
         if ($flash_deal) {
             $flash_deal_details = FlashDealDetail::with('product')->where('flash_deal_id', $flash_deal->id)->paginate(16);

@@ -65,7 +65,7 @@
 
                 <div class="right-block">
                     <div class="caption">
-                        <h4><a href="{{url('/product/details/page/'.$product->id)}}">{{Str::limit($product->product_name,40)}}</a></h4>
+                        <h4><a href="{{url('product/'.$product->slug.'/'.$product->id)}}">{{Str::limit($product->product_name,40)}}</a></h4>
                         <div class="total-price">
                             <div class="price price-left">
                                 <span class="price-new">$98.00 </span> <span class="price-old">$122.00 </span>
@@ -100,6 +100,6 @@
 
 
 
-  
+
 </div>
 @endif

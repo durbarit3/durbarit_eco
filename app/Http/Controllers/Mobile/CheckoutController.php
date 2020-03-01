@@ -7,32 +7,20 @@ use Illuminate\Http\Request;
 use Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Response;
-
-use PayPal;
 // use Auth;
-use App\User;
 use App\Cupon;
-use App\Product;
 use Carbon\Carbon;
 use App\OrderPlace;
-
 use App\OrderStorage;
 use App\UserUsedCupon;
 use App\ProductStorage;
 use App\ShippingAddress;
 use App\UpozilaCouriers;
-use Illuminate\Support\Str;
-
 use App\DatabaseStorageModel;
 use App\DeleveryAmount;
 use App\Mail\OrderSuccessfullMail;
-
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Srmklive\PayPal\Services\ExpressCheckout;
-use Srmklive\PayPal\Services\AdaptivePayments;
-use Illuminate\Foundation\Console\Presets\React;
+
 
 class CheckoutController extends Controller
 {
@@ -66,9 +54,6 @@ class CheckoutController extends Controller
 
             return redirect('/')->with('messege','Please add some product');
         }
-
-
-
 
     }
 
@@ -124,12 +109,12 @@ class CheckoutController extends Controller
             $cupondatavalue = $cupon->discount . '%';
         }
 
-        
 
 
 
-        
-        return view('mobile.shopping.checkoutdatashow', compact('usercartdatas','cupondatavalue')); 
+
+
+        return view('mobile.shopping.checkoutdatashow', compact('usercartdatas','cupondatavalue'));
 
 
 
@@ -543,7 +528,7 @@ class CheckoutController extends Controller
 
     public function shippingChargeValue($id)
     {
-        
+
         $deleveryamount =DeleveryAmount::first();
         $userid =  \Request::getClientIp(true);
 
@@ -554,8 +539,8 @@ class CheckoutController extends Controller
         }else{
             $deleverycharge =$deleveryamount ->outsidedhaka;
         }
-        
-    
+
+
         return view('mobile.shopping.checkoutdatashow', compact('deleverycharge','usercartdatas'));
 
     }

@@ -27,8 +27,8 @@
                     <tbody>
                       @foreach($history as $data)
                         <tr>
-                            <td class="text-center">#{{$data->order_id}}</td>
-                            <td class="text-center">{{$data->total_quantity}}</td>
+                            <td class="text-center">#{{ $data->order_id }}</td>
+                            <td class="text-center">{{ $data->total_quantity }}</td>
                             @if($data->delevary==1)
                             <td class="text-center">Pending</td>
                             @elseif($data->delevary==2)
@@ -40,9 +40,14 @@
                             @else
                             <td class="text-center">Reject</td>
                             @endif
-                            <td class="text-center">{{$data->created_at}}</td>
-                            <td class="text-right">{{$data->total_price}}</td>
-                            <td class="text-center"><a class="btn btn-info" title="" data-toggle="tooltip" href="{{url('/customer/order/info/'.$data->id)}}" data-original-title="View"><i class="fa fa-eye"></i></a>
+                            <td class="text-center">{{ $data->created_at }}</td>
+                            <td class="text-right">{{ $data->total_price }}</td>
+                            <td class="text-center">
+                                <a class="btn btn-info" title="" data-toggle="tooltip" href="{{url('/customer/order/info/'. $data->id)}}" data-original-title="View"><i class="fa fa-eye"></i></a>
+                                @if ($data->payment_secure_id)
+                                <a class="btn btn-info" title="" data-toggle="tooltip" href="{{route('order.payment', $data->payment_secure_id)}}"><i class="fa fa-money" aria-hidden="true"></i></a>
+                                @endif
+
                             </td>
                         </tr>
                       @endforeach

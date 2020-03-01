@@ -37,7 +37,7 @@
 																$m_order_id=$orderplaceid->order_id;
 																$allproduct=App\ProductStorage::where('order_id',$m_order_id)->first();
 															@endphp
-															@foreach(json_decode($allproduct->product_details	) as $key => $new)
+															@foreach(json_decode($allproduct->product_details) as $key => $new)
 															<tr>
 																<td>{{++$key}}</td>
 																<td>{{Str::limit($new->name,20)}}</td>

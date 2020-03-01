@@ -424,34 +424,34 @@
 															if(isset($user_division)){
 																$user_division = $user_division->user_division_id;
 																$deleveryamount = App\DeleveryAmount::first();
-															
+
 															if($user_division == 6){
 																$deleverycharge =$deleveryamount->insidedhaka;
 															}else{
 																$deleverycharge =$deleveryamount->outsidedhaka;
 															}
 															}
-															
+
 														@endphp
 
-													
+
 															@if($user_division == 6)
 															@isset($deleveryamount)
 																<input type="hidden" value="{{$deleveryamount->insidedhaka}}" name="shipping_amount">
 															@endisset
-																
+
 															@else
 															@isset($deleveryamount)
 															<input type="hidden" value="{{$deleveryamount->outsidedhaka}}" name="shipping_amount">
 															@endisset
 															@endif
-												
+
 														@if(isset($deleverycharge))
 															<input type="hidden" value="{{Cart::session(\Request::getClientIp(true))->getTotal() + $deleverycharge}}" name="total_price">
 														@else
 																<input type="hidden" value="{{Cart::session(\Request::getClientIp(true))->getTotal()}}" name="total_price">
 														@endif
-												
+
 
 													<input type="hidden" value="{{ Cart::session(\Request::getClientIp(true))->getTotalQuantity() }}" name="total_quantity">
 
@@ -533,7 +533,7 @@ $(document).ready(function () {
 			dataType: "json",
 
 			success: function (data) {
-				
+
 				$('#user_district').empty();
 				$('#user_district').append(' <option value="0">--Please Select Your Division--</option>');
 				$.each(data, function (index, districtbj) {
@@ -597,7 +597,7 @@ $.ajax({
 	url: "{{ route('get.cart.data') }}",
 
 	success: function(data) {
-		
+
 		$('#cartdata').html(data);
 
 	}
@@ -704,7 +704,7 @@ $(document).ready(function () {
 	$('#shipping_division').click(function () {
 
 		var dist_id = $(this).val();
-		
+
 
 
 
@@ -720,7 +720,7 @@ $(document).ready(function () {
 			dataType: "json",
 
 			success: function (data) {
-				
+
 
 				$('#shipping_district').empty();
 				$('#shipping_district').append(' <option value="0">--Please Select Your Division--</option>');
@@ -743,7 +743,7 @@ $(document).ready(function () {
 	$('#shipping_district').click(function () {
 
 		var upazilla_id = $(this).val();
-		
+
 
 
 
@@ -758,7 +758,7 @@ $(document).ready(function () {
 			dataType: "json",
 
 			success: function (data) {
-				
+
 
 				$('#sipping_upazila').empty();
 				$('#sipping_upazila').append(' <option value="0">--Please Select Your Division--</option>');
@@ -778,8 +778,8 @@ $(document).ready(function () {
 $(document).ready(function () {
 	$('#user_division, #shipping_division').change(function () {
 		var division_val =$(this).val();
-		
-		
+
+
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -788,27 +788,87 @@ $(document).ready(function () {
 		$.ajax({
 			type: 'GET',
 			url: "{{ url('/user/shipping/value') }}/" + division_val,
-			
+
 
 			success: function (data) {
 				console.log(data);
 				$('#cartdata').html(data);
 
-				
+
 			}
 		});
-		
-		
+
+
 	});
 
-
-	
-
-	
 });
 
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        //var user_shipping_address = $('#user_upazila').val();
+        $('#user_upazila').on('change', function () {
+            var user_up_id = $(this).val();
+            if (user_up_id) {
+                $.ajax({
+                    url:"{{ url('get/courier/by/upazila/id/') }}"+"/"+user_up_id,
+                    type: 'get',
+                    success:function(data){
+                        $('#shipping_courier').empty();
+                        $('#shipping_courier').append(data);
+                    }
+                });
+            }
+        })
+
+        $('#shipping_upazila').on('change', function () {
+            var ship_up_id = $(this).val();
+            if (ship_up_id) {
+                $.ajax({
+                    url:"{{ url('get/courier/by/upazila/id/') }}"+"/"+ship_up_id,
+                    type: 'get',
+                    success:function(data){
+                        $('#shipping_courier').empty();
+                        $('#shipping_courier').append(data);
+                    }
+                });
+            }
+        })
+    });
+</script>
+
+<script>
+
+    $(document).ready(function(){
+        $('.attention_msg').hide();
+        $('#shipping_courier').on('change', function(){
+            var courier_id = $(this).val();
+            var user_upazila = $('#user_upazila').val();
+            var shipping_upazila = $('#shipping_upazila').val();
+            if (!shipping_upazila) {
+                $.ajax({
+                    url:"{{ url('check/courier/cash_on_deliviry') }}" + "/" + user_upazila + "/" + courier_id,
+                    type: 'get',
+                    dataType: 'json',
+                    success:function(data){
+                        //console.log(data);
+                        if (data.data == 0) {
+                            $('.attention_msg').show();
+                            $('.attention_msg').html('Attention: This Delivery Method Does Not Support Cash on Delivery');
+                        }else{
+                            $('.attention_msg').hide();
+                            $('.attention_msg').html('');
+                        }
+                    }
+                });
+            }
+
+        })
+    });
 
 </script>
-		@endsection
-	
+@endsection
+
 

@@ -13,7 +13,6 @@ use App\UserUsedCupon;
 use App\ProductStorage;
 use App\ShippingAddress;
 use App\UpozilaCouriers;
-
 use Illuminate\Http\Request;
 use App\DatabaseStorageModel;
 use App\Mail\OrderSuccessfullMail;
@@ -93,7 +92,6 @@ class CheckoutController extends Controller
                     $cupondiscounttype = Cupon::where('cupon_code', $request->cuponvalue)->first()->discount_type;
                     $cupondiscountspers = Cupon::where('cupon_code', $request->cuponvalue)->first()->discount . '%';
                     if ($cuponminimum <= $carttotal) {
-
 
                         if ($cupondiscounttype == 1) {
 
@@ -207,7 +205,7 @@ class CheckoutController extends Controller
     public function orderSubmit(Request $request)
     {
 
-      //return $request;
+        //return $request;
 
         $validatedData = $request->validate([
             'user_id' => 'required',
@@ -336,7 +334,6 @@ class CheckoutController extends Controller
             );
 
             return redirect()->route('customer.order')->with($notification);
-
         } else {
             return redirect()->route('order.payment', $getOrder->payment_secure_id);
         }
@@ -443,6 +440,7 @@ class CheckoutController extends Controller
         $usercartdatas = OrderPlace::where('user_id', $userid)->orderBy('id', 'DESC')->first();
         $update = OrderPlace::where('id', $usercartdatas->id)->update([
             'is_paid' => '1',
+            'payment_secure_id' => NULL,
         ]);
         return redirect()->route('payment.paypal.success');
     }

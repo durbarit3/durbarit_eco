@@ -86,7 +86,7 @@ $image=App\SiteBanner::where('section',10)->where('is_deleted',0)->where('status
                                 <div class="product-item-container">
                                     <div class="left-block">
                                         <div class="product-image-container  second_img  ">
-                                            <a href="{{url('/product/details/page/'.$flash_deal_detail->product->id)}}"
+                                            <a href="{{url('product/'.$flash_deal_detail->product->slug.'/'.$flash_deal_detail->product->id)}}"
                                                 title="{{ $flash_deal_detail->product->product_name }}">
                                                 <img src="{{asset('public/uploads/products/thumbnail/'.$flash_deal_detail->product->thumbnail_img)}} "
                                                     alt="{{ $flash_deal_detail->product->product_name }}"
@@ -194,7 +194,7 @@ $image=App\SiteBanner::where('section',10)->where('is_deleted',0)->where('status
                             </div>
                             @endforeach
                         </div>
-
+                        @if ($flashDeal)
                         <div class="product-filter product-filter-bottom filters-panel">
                             <div class="col-sm-6 text-left">
                                 {!! $flash_deal_details->links() !!}
@@ -203,6 +203,8 @@ $image=App\SiteBanner::where('section',10)->where('is_deleted',0)->where('status
                                 Showing ({{ isset($_GET["page"]) ? $_GET["page"] : 1 }} Pages)
                             </div>
                         </div>
+                        @endif
+
                     </div>
                 </div>
             </div>
